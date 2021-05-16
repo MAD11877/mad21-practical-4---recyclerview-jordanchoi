@@ -51,8 +51,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User u = userList.get(position);
 
-        holder.name.setText(u.name);
-        holder.desc.setText(u.description);
+        holder.name.setText(u.getUserName());
+        holder.desc.setText(u.getUserDesc());
         holder.displayPicture.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -63,10 +63,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent mainActivity = new Intent(context, MainActivity.class);
                         Bundle userData = new Bundle();
-                        userData.putString("Name", u.name);
-                        userData.putString("Desc", u.description);
-                        userData.putInt("Id", u.id);
-                        userData.putBoolean("followStatus", u.followed);
+                        userData.putString("Name", u.getUserName());
+                        userData.putString("Desc", u.getUserDesc());
+                        userData.putInt("Id", u.getUserId());
+                        userData.putBoolean("followStatus", u.getFollowBool());
+                        userData.putInt("index", position);
                         mainActivity.putExtra("UserData", userData);
                         context.startActivity(mainActivity);
                     }
@@ -92,7 +93,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
     @Override
     public int getItemViewType(int position) {
         // retrieve the username for operation
-        String name = userList.get(position).name;
+        String name = userList.get(position).getUserName();
         if(name.charAt(name.length()-1) == '7')
         {
             return 0;

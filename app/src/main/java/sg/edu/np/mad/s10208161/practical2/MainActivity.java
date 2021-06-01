@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static sg.edu.np.mad.s10208161.practical2.ListActivity.userList;
+
 public class MainActivity extends AppCompatActivity {
 
 //  my codes - not even sure if this is how you comment in Java
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle ud = mainActivity.getBundleExtra("UserData");
 
 //      reassign variable u to retrieve the targeted User object based on the passed index and retrieve from the list
-        u = User.userList.get(ud.getInt("index"));
+        u = userList.get(ud.getInt("index"));
 
 /*      No longer required for practical 4
         u1.name = ud.getString("Name");
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
 //      calls the method to change the button texts according to the bool value of followed in the user class.
         followBtnText(u, followBtn);
-
+        DBHandler db = new DBHandler(this);
 //      add onClickListener to the followBtn to handle click events from the button
         followBtn.setOnClickListener(
                 new View.OnClickListener(){
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(getApplication(),"Unfollowed",Toast.LENGTH_SHORT).show();
                         }
+                        db.getWritableDatabase();
+                        db.updateUser(u);
                     }
         });
     }

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -12,17 +13,33 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ListActivity extends AppCompatActivity {
+    public static ArrayList<User> userList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 // boilerplate codes in the next two lines
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-// Week 4 - 1.1) Create User List
-        ArrayList<User> ul = User.userList;
+        DBHandler db = new DBHandler(this);
+        db.getWritableDatabase();
 
-// Week 4 - 1.2) Create 20 User Objects and add to the userList.
-        for (int i = 0; i < 20; i++)
+        userList = db.getUsers();
+
+// original position for comment block #1, moved down so that it does not clutter the editor
+
+        RecyclerView rv = findViewById(R.id.userRv);
+        UsersAdapter adapter = new UsersAdapter(this, userList);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        rv.setLayoutManager(lm);
+        rv.setAdapter(adapter);
+    }
+}
+
+// COMMENT BLOCK #1
+
+// Week 4 - 1.2) Create 20 User Objects and add to the userList. - no longer required (wk7)
+/*        for (int i = 0; i < 20; i++)
         {
             Random rd = new Random();
             int randomIntForName = rd.nextInt(10000000);
@@ -33,9 +50,9 @@ public class ListActivity extends AppCompatActivity {
             u.setUserDesc("Description" + randomIntForDesc);
             u.setBool(randBool);
             u.setUserId(i);
-            ul.add(u);
-        }
-
+            userList.add(u);
+            db.addUser(u);
+        }*/
 /* Block of codes no longer required for prac4
 // Search center *image* by ID 'imageClick' and assign to var 'centerImg'
         ImageView centerImg = findViewById(R.id.imageClick);
@@ -76,10 +93,3 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 */
-        RecyclerView rv = findViewById(R.id.userRv);
-        UsersAdapter adapter = new UsersAdapter(this, ul);
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        rv.setLayoutManager(lm);
-        rv.setAdapter(adapter);
-    }
-}

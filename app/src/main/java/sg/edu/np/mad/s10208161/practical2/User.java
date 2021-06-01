@@ -7,19 +7,13 @@ public class User {
     private String description;
     private int id;
     private boolean followed;
-    public static ArrayList<User> userList = new ArrayList<User>();
 
     public User() {
     }
 
     // method created in the user class - to change the followed value in this object when called.
     public void toggleFollow() {
-        if (followed) {
-            followed = false;
-        }
-        else {
-            followed = true;
-        }
+        followed = !followed;
     }
 
     // methods for get & set, not sure if i am doing it right.
